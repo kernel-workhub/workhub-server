@@ -17,7 +17,7 @@ Work Hub는 웹 개발 프로젝트의 전체 생명주기를 관리하고, 개�
 - **프로젝트 게시판**: 프로젝트별 공지사항 및 소통 공간
 - **CS 게시판**: 고객 지원 및 문의 관리
 - **댓글 시스템**: 게시글 및 체크리스트 항목별 의견 교환
-- **실시간 알림**: Redis Pub/Sub 기반 SSE 실시간 알림 시스템
+- **실시간 알림**: SSE 기반 실시간 알림 시스템
 
 ### 권한 관리
 - **역할 기반 접근 제어**: 관리자, 개발자, 고객사 역할별 권한 관리
@@ -40,7 +40,6 @@ Work Hub는 웹 개발 프로젝트의 전체 생명주기를 관리하고, 개�
 - **PostgreSQL 16**: 메인 데이터베이스
   - JSONB를 활용한 히스토리 데이터 저장
   - View를 활용한 통합 히스토리 조회
-- **Redis 7**: Pub/Sub 기반 실시간 알림
 
 ### Infrastructure
 - **Docker & Docker Compose**: 컨테이너 기반 배포
@@ -57,7 +56,6 @@ Work Hub는 웹 개발 프로젝트의 전체 생명주기를 관리하고, 개�
 - Java 21 이상
 - Docker & Docker Compose
 - PostgreSQL 16 (로컬 개발 시 Docker 사용 권장)
-- Redis 7 (로컬 개발 시 Docker 사용 권장)
 
 ### 환경 설정
 
@@ -75,7 +73,7 @@ cp .env.example .env
 
 3. Docker Compose로 실행
 ```bash
-# 애플리케이션 실행 (PostgreSQL, Redis 포함)
+# 애플리케이션 실행 (PostgreSQL 포함)
 DB_PASSWORD=your_password docker compose --profile app up -d
 
 # 모니터링 스택 실행 (선택사항)
@@ -184,12 +182,12 @@ src/main/java/com/workhub/
 
 GitHub Actions를 통해 자동화된 테스트가 실행됩니다:
 - **트리거**: `main`, `dev` 브랜치로의 Pull Request
-- **환경**: PostgreSQL 16 + Redis 7
+- **환경**: PostgreSQL 16
 - **실행**: `./gradlew clean test --build-cache`
 
 ## 아키텍처 특징
 
-### 1. 도메인 주도 레이어드 아키텍처
+### 1. 도메인 기반 레이어드 아키텍처
 각 도메인이 독립적인 레이어(Controller-Service-Repository-Entity)를 가지며, 도메인 간 의존성을 최소화합니다.
 
 ### 2. QueryDSL 활용
@@ -200,16 +198,16 @@ GitHub Actions를 통해 자동화된 테스트가 실행됩니다:
 - PostgreSQL View를 통해 통합 조회
 - JSONB로 변경 전 데이터 스냅샷 저장
 
-### 4. 실시간 알림 (Redis Pub/Sub + SSE)
+### 4. 실시간 알림 (In-Memory SSE)
 ```
-[사용자 액션] → [Service] → DB 저장 + Redis Publish
-                                  ↓
-                            [Redis Pub/Sub]
-                                  ↓
-                        [NotificationEmitterService]
-                                  ↓
-                            [SSE 연결된 클라이언트]
+[사용자 액션] → [Service] → DB 저장
+                              ↓
+                    [NotificationEmitterService]
+                              ↓
+                        [SSE 연결된 클라이언트]
 ```
+- 단일 인스턴스 환경에서 `ConcurrentHashMap` 기반 메모리 관리
+- 멀티 인스턴스 확장 시 Redis Pub/Sub 추가 가능
 
 ### 5. 세션 기반 인증
 JWT 대신 Spring Security의 세션 기반 인증을 사용하여 보안성을 강화합니다.
