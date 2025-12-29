@@ -1,4 +1,4 @@
-package com.workhub.userTable.service;
+package com.workhub.userTable.service.user;
 
 import com.workhub.global.port.AuthorLookupPort;
 import com.workhub.global.port.dto.AuthorProfile;

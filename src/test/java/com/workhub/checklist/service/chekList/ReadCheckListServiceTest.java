@@ -12,7 +12,7 @@ import com.workhub.checklist.service.CheckListAccessValidator;
 import com.workhub.checklist.service.checkList.CheckListService;
 import com.workhub.checklist.service.checkList.ReadCheckListService;
 import com.workhub.userTable.dto.user.response.UserDetailResponse;
-import com.workhub.userTable.service.UserService;
+import com.workhub.userTable.service.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

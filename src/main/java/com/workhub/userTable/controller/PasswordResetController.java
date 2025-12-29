@@ -5,7 +5,7 @@ import com.workhub.userTable.api.PasswordResetApi;
 import com.workhub.userTable.dto.user.request.PasswordResetConfirmRequest;
 import com.workhub.userTable.dto.user.request.PasswordResetSendRequest;
 import com.workhub.userTable.dto.user.request.VerifyCodeRequest;
-import com.workhub.userTable.service.PasswordResetService;
+import com.workhub.userTable.service.user.PasswordResetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

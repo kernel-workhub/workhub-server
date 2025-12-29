@@ -6,7 +6,7 @@ import com.workhub.checklist.dto.checkList.CheckListUserInfo;
 import com.workhub.checklist.entity.checkList.CheckList;
 import com.workhub.checklist.service.CheckListAccessValidator;
 import com.workhub.userTable.dto.user.response.UserDetailResponse;
-import com.workhub.userTable.service.UserService;
+import com.workhub.userTable.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

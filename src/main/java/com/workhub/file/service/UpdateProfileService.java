@@ -2,7 +2,7 @@ package com.workhub.file.service;
 
 import com.workhub.global.util.SecurityUtil;
 import com.workhub.userTable.entity.UserTable;
-import com.workhub.userTable.service.UserService;
+import com.workhub.userTable.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

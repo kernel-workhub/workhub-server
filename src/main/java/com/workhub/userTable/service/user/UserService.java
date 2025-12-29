@@ -1,15 +1,14 @@
-package com.workhub.userTable.service;
+package com.workhub.userTable.service.user;
 
 import com.workhub.global.error.ErrorCode;
 import com.workhub.global.error.exception.BusinessException;
 import com.workhub.global.security.CustomUserDetails;
-import com.workhub.userTable.dto.user.request.AdminPasswordResetRequest;
 import com.workhub.userTable.dto.user.request.UserLoginRecord;
-import com.workhub.userTable.dto.user.request.UserPasswordChangeRequest;
-import com.workhub.userTable.dto.user.request.UserRegisterRecord;
-import com.workhub.userTable.dto.user.response.*;
+import com.workhub.userTable.dto.user.response.LoginResult;
+import com.workhub.userTable.dto.user.response.UserDetailResponse;
+import com.workhub.userTable.dto.user.response.UserLoginResponse;
+import com.workhub.userTable.dto.user.response.UserNameResponse;
 import com.workhub.userTable.entity.Status;
-import com.workhub.userTable.entity.UserRole;
 import com.workhub.userTable.entity.UserTable;
 import com.workhub.userTable.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +32,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public List<UserListResponse> getUsers(){
-        return userRepository.findAll().stream()
-                .map(UserListResponse::from)
-                .toList();
+    @Transactional
+    public void save(UserTable user) {
+        userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserTable> getUsers() {
+        return userRepository.findAll();
     }
 
     @Transactional(readOnly = true)
@@ -53,6 +56,7 @@ public class UserService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXISTS));
     }
 
+    @Transactional(readOnly = true)
     public LoginResult login(UserLoginRecord userLoginRecord) {
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
                 userLoginRecord.loginId(),
@@ -73,64 +77,26 @@ public class UserService {
         return new LoginResult(authentication, loginResponse);
     }
 
-    @Transactional
-    public UserTable register(UserRegisterRecord record) {
-        validateLoginId(record.loginId());
-        validateEmail(record.email());
-
-        UserTable userTable = UserTable.of(
-                record,
-                passwordEncoder.encode(record.password())
-        );
-
-        return userRepository.save(userTable);
-    }
-
-    @Transactional
-    public void changePassword(Long targetUserId, UserPasswordChangeRequest passwordChangeRequest) {
-        UserTable userTable = getUserById(targetUserId);
-        if (!passwordEncoder.matches(passwordChangeRequest.currentPassword(), userTable.getPassword())) {
-            throw new BusinessException(ErrorCode.NOT_EQUAL_PASSWORD);
-        }
-
-        userTable.updatePassword(passwordEncoder.encode(passwordChangeRequest.newPassword()));
-    }
-
-    @Transactional
-    public void resetPassword(Long targetUserId, AdminPasswordResetRequest passwordResetRequest) {
-        UserTable userTable = getUserById(targetUserId);
-        userTable.updatePassword(passwordEncoder.encode(passwordResetRequest.newPassword()));
-    }
-
-    @Transactional
-    public UserTableResponse updateRole(Long userId, UserRole role) {
-        UserTable userTable = getUserById(userId);
-        userTable.updateRole(role);
-        return UserTableResponse.from(userTable);
-    }
-
-    @Transactional
-    public void deleteUser(Long userId) {
-        UserTable userTable = getUserById(userId);
-        userTable.updateStatus(Status.INACTIVE);
-    }
-
-    private void validateLoginId(String loginId) {
+    @Transactional(readOnly = true)
+    public void validateLoginId(String loginId) {
         if (userRepository.existsByLoginId(loginId)) {
             throw new BusinessException(ErrorCode.ALREADY_REGISTERED_USER);
         }
     }
 
-    private void validateEmail(String email) {
+    @Transactional(readOnly = true)
+    public void validateEmail(String email) {
         if (userRepository.existsByEmail(email)) {
             throw new BusinessException(ErrorCode.ALREADY_EXISTS__EMAIL);
         }
     }
 
+    @Transactional(readOnly = true)
     public Map<Long, UserTable> getUserMapByUserIdIn(List<Long> userIds) {
         return userRepository.findMapByUserIdIn(userIds);
     }
 
+    @Transactional(readOnly = true)
     public List<UserNameResponse> getUserMapByCompanyIdIn(Long companyId) {
 
         List<UserTable> userNames = userRepository.findMapByCompanyIdIn(companyId);
@@ -140,10 +106,12 @@ public class UserService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public Long countActiveUsers(){
         return userRepository.countByStatus(Status.ACTIVE);
     }
 
+    @Transactional(readOnly = true)
     public Long countActiveUsersUntil(LocalDateTime monthEnd) {
         return userRepository.countActiveUsersUntil(monthEnd);
     }
