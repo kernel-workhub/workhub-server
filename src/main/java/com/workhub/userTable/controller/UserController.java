@@ -10,8 +10,8 @@ import com.workhub.userTable.dto.user.request.UserLoginRecord;
 import com.workhub.userTable.dto.user.request.UserPasswordChangeRequest;
 import com.workhub.userTable.dto.user.response.LoginResult;
 import com.workhub.userTable.dto.user.response.UserLoginResponse;
-import com.workhub.userTable.service.UpdateUserService;
-import com.workhub.userTable.service.UserService;
+import com.workhub.userTable.service.user.ReadUserService;
+import com.workhub.userTable.service.user.UpdateUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserController implements UserApi {
 
-    private final UserService userService;
+    private final ReadUserService readUserService;
     private final UpdateProfileService profileService;
     private final UpdateUserService updateUserService;
 
@@ -41,7 +41,7 @@ public class UserController implements UserApi {
                                                                 HttpServletRequest request) {
 
         // 서비스에서 실제 인증 (authenticationManager.authenticate 호출) 및 로그인 응답 생성
-        LoginResult loginResult = userService.login(userLoginRecord);
+        LoginResult loginResult = readUserService.login(userLoginRecord);
         Authentication authentication = loginResult.authentication();
 
         // SecurityContext 생성해서 Authentication 넣기
@@ -63,7 +63,7 @@ public class UserController implements UserApi {
     @Override
     public ResponseEntity<ApiResponse<String>> updatePassword(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                               @Valid @RequestBody UserPasswordChangeRequest passwordUpdateDto) {
-        userService.changePassword(userDetails.getUserId(), passwordUpdateDto);
+        updateUserService.changePassword(userDetails.getUserId(), passwordUpdateDto);
         return ApiResponse.success("비밀번호 재설정 완료", "비밀번호 재설정 요청 성공");
     }
 

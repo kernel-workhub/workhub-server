@@ -5,7 +5,7 @@ import com.workhub.projectNode.dto.NodeResponse;
 import com.workhub.projectNode.entity.NodeStatus;
 import com.workhub.projectNode.entity.ProjectNode;
 import com.workhub.userTable.entity.UserTable;
-import com.workhub.userTable.service.UserService;
+import com.workhub.userTable.service.user.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

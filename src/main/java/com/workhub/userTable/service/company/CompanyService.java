@@ -1,4 +1,4 @@
-package com.workhub.userTable.service;
+package com.workhub.userTable.service.company;
 
 import com.workhub.global.error.ErrorCode;
 import com.workhub.global.error.exception.BusinessException;

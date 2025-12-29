@@ -5,7 +5,7 @@ import com.workhub.projectNode.dto.ConfirmStatusResponse;
 import com.workhub.projectNode.dto.NodeResponse;
 import com.workhub.projectNode.entity.ProjectNode;
 import com.workhub.userTable.entity.UserTable;
-import com.workhub.userTable.service.UserService;
+import com.workhub.userTable.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

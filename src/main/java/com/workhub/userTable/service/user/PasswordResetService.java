@@ -1,4 +1,4 @@
-package com.workhub.userTable.service;
+package com.workhub.userTable.service.user;
 
 import com.workhub.global.error.ErrorCode;
 import com.workhub.global.error.exception.BusinessException;
@@ -7,6 +7,7 @@ import com.workhub.userTable.dto.user.request.PasswordResetSendRequest;
 import com.workhub.userTable.dto.user.request.VerifyCodeRequest;
 import com.workhub.userTable.entity.UserTable;
 import com.workhub.userTable.repository.UserRepository;
+import com.workhub.userTable.service.EmailVerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
