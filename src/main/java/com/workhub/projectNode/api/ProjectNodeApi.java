@@ -17,6 +17,34 @@ import java.util.List;
 public interface ProjectNodeApi {
 
     @Operation(
+            summary = "프로젝트 노드 상태 조회",
+            description = "특정 프로젝트 노드의 승인 상태를 조회합니다. 노드의 현재 승인 상태와 관련 정보를 반환합니다."
+    )
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "노드 상태 조회 성공",
+                    content = @Content(schema = @Schema(implementation = ConfirmStatusResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "404",
+                    description = "프로젝트 또는 노드를 찾을 수 없음"
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "서버 오류"
+            )
+    })
+    @GetMapping("/{nodeId}")
+    ResponseEntity<ApiResponse<ConfirmStatusResponse>> getNodeStatus(
+            @Parameter(description = "프로젝트 ID", required = true)
+            @PathVariable("projectId") Long projectId,
+
+            @Parameter(description = "노드 ID", required = true)
+            @PathVariable("nodeId") Long nodeId
+    );
+
+    @Operation(
             summary = "프로젝트 노드 리스트 조회",
             description = "프로젝트에 속한 모든 노드의 리스트를 조회합니다. 노드는 순서(nodeOrder)를 기준으로 정렬되어 반환됩니다. " +
                     "각 노드는 제목, 설명, 상태, 우선순위, 순서, 계약 기간 등의 정보를 포함합니다."
