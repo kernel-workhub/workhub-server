@@ -2,6 +2,7 @@ package com.workhub.history.controller;
 
 import com.workhub.global.entity.HistoryType;
 import com.workhub.global.entity.ActionType;
+import com.workhub.history.api.UnifiedHistoryApi;
 import com.workhub.history.dto.UnifiedHistoryResponse;
 import com.workhub.history.service.UnifiedHistoryService;
 import com.workhub.global.response.ApiResponse;
@@ -24,7 +25,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class UnifiedHistoryController {
+public class UnifiedHistoryController implements UnifiedHistoryApi {
 
     private final UnifiedHistoryService unifiedHistoryService;
 
@@ -37,6 +38,7 @@ public class UnifiedHistoryController {
      * @return 페이징된 히스토리 목록
      */
     @GetMapping("/api/v1/admin/histories/all")
+    @Override
     public ResponseEntity<ApiResponse<Page<UnifiedHistoryResponse>>> findAllHistory(
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
@@ -55,6 +57,7 @@ public class UnifiedHistoryController {
      * @return 페이징된 히스토리 목록
      */
     @GetMapping("/api/v1/admin/histories")
+    @Override
     public ResponseEntity<ApiResponse<Page<UnifiedHistoryResponse>>> findByHistoryTypeForAdmin(
             @RequestParam("types") List<HistoryType> historyTypes,
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -74,6 +77,7 @@ public class UnifiedHistoryController {
      * @return 페이징된 히스토리 목록
      */
     @GetMapping("/api/v1/admin/histories/action/{actionType}")
+    @Override
     public ResponseEntity<ApiResponse<Page<UnifiedHistoryResponse>>> findByActionType(
             @PathVariable ActionType actionType,
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -93,6 +97,7 @@ public class UnifiedHistoryController {
      * @return 페이징된 히스토리 목록
      */
     @GetMapping("/api/v1/admin/histories/user/{userId}")
+    @Override
     public ResponseEntity<ApiResponse<Page<UnifiedHistoryResponse>>> findByUserId(
             @PathVariable Long userId,
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -113,6 +118,7 @@ public class UnifiedHistoryController {
      * @return 페이징된 히스토리 목록
      */
     @GetMapping("/api/v1/histories/all")
+    @Override
     public ResponseEntity<ApiResponse<Page<UnifiedHistoryResponse>>> findAllUserHistory(
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
@@ -131,6 +137,7 @@ public class UnifiedHistoryController {
      * @return 페이징된 히스토리 목록 (IP, userAgent 제외)
      */
     @GetMapping("/api/v1/histories/type/{historyType}")
+    @Override
     public ResponseEntity<ApiResponse<Page<UnifiedHistoryResponse>>> findByHistoryTypeForPublic(
             @PathVariable HistoryType historyType,
             @PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -151,6 +158,7 @@ public class UnifiedHistoryController {
      * @return 페이징된 히스토리 목록 (IP, userAgent 제외)
      */
     @GetMapping("/api/v1/histories/{targetId}")
+    @Override
     public ResponseEntity<ApiResponse<Page<UnifiedHistoryResponse>>> findByTargetId(
             @PathVariable Long targetId,
             @RequestParam("historyType") HistoryType historyType,

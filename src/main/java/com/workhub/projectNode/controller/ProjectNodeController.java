@@ -26,6 +26,7 @@ public class ProjectNodeController implements ProjectNodeApi {
     private final DeleteProjectNodeService deleteProjectNodeService;
 
     @GetMapping("/{nodeId}")
+    @Override
     public ResponseEntity<ApiResponse<ConfirmStatusResponse>> getNodeStatus(@PathVariable("projectId") Long projectId,
                                                                             @PathVariable("nodeId") Long nodeId) {
 
@@ -94,6 +95,7 @@ public class ProjectNodeController implements ProjectNodeApi {
     }
 
     @PatchMapping("{nodeId}/confirm")
+    @Override
     public ResponseEntity<ApiResponse<String>> requestConfirm(@PathVariable("projectId") Long projectId,
                                                               @PathVariable("nodeId") Long nodeId,
                                                               @RequestBody ClientStatusRequest request) {

@@ -77,6 +77,7 @@ public class UserController implements UserApi {
     }
 
     @PostMapping("/confirm")
+    @Override
     public ResponseEntity<ApiResponse<String>> confirm(
             @RequestBody @Valid EmailVerificationConfirmRequest request ) {
 
@@ -85,6 +86,7 @@ public class UserController implements UserApi {
     }
 
     @PatchMapping("/phone")
+    @Override
     public ResponseEntity<ApiResponse<String>> updatePhone(@RequestBody UpdatePhoneRequest request) {
 
         updateUserService.updatePhone(request);
