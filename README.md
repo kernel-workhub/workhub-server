@@ -231,8 +231,7 @@ docker compose --profile monitor up -d
 ## 문서
 
 - **API 문서**: [Swagger UI](http://localhost:8080/swagger-ui.html)
-- **개발 가이드**: `CLAUDE.md` - Claude Code 작업 시 참고 문서
-
+  
 ## 라이선스
 
 이 프로젝트는 비공개 프로젝트입니다.
