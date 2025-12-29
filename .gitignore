@@ -48,3 +48,4 @@ compose.override.yml
 /build/generated/
 /WORK_LOG.md
 /src/main/resources/application-local.yml
+/CLAUDE.md
