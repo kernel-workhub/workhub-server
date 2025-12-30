@@ -35,6 +35,7 @@ public class CompanyService {
 
     @Transactional
     public CompanyResponse registerCompany(CompanyRegisterRequest request) {
+
         validateDuplicateCompanyNumber(request.companyNumber());
 
         Company company = Company.of(request);
