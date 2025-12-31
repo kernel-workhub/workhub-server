@@ -8,7 +8,7 @@ import com.workhub.project.service.ProjectService;
 import com.workhub.projectNode.dto.ProjectNodeCategoryCount;
 import com.workhub.projectNode.entity.NodeCategory;
 import com.workhub.projectNode.service.ProjectNodeService;
-import com.workhub.userTable.service.company.CompanyService;
+import com.workhub.userTable.service.company.ReadCompanyService;
 import com.workhub.userTable.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class DashBoardAdminService {
     private static final String PROJECT_CRITERIA = "계약 기간이 월과 겹치는 프로젝트";
 
     private final UserService userService;
-    private final CompanyService companyService;
+    private final ReadCompanyService readCompanyService;
     private final ProjectService projectService;
     private final ProjectNodeService projectNodeService;
 
@@ -53,7 +53,7 @@ public class DashBoardAdminService {
      */
     public CompanyCountResponse getCompanyCount() {
 
-        return CompanyCountResponse.from(companyService.countActiveCompanies());
+        return CompanyCountResponse.from(readCompanyService.countActiveCompanies());
     }
 
     /**

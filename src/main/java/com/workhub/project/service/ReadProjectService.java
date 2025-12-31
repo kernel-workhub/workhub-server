@@ -18,6 +18,7 @@ import com.workhub.userTable.entity.Company;
 import com.workhub.userTable.entity.UserRole;
 import com.workhub.userTable.entity.UserTable;
 import com.workhub.userTable.service.company.CompanyService;
+import com.workhub.userTable.service.company.ReadCompanyService;
 import com.workhub.userTable.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,7 @@ public class ReadProjectService {
     private final ProjectService projectService;
     private final ProjectNodeService projectNodeService;
     private final UserService userService;
+    private final ReadCompanyService readCompanyService;
     private final CompanyService companyService;
 
     /**
@@ -156,7 +158,7 @@ public class ReadProjectService {
                 .map(Project::getClientCompanyId)
                 .distinct()
                 .toList();
-        Map<Long, Company> companyMap = companyService.getCompanyMapByCompanyIdIn(companyIds);
+        Map<Long, Company> companyMap = readCompanyService.getCompanyMapByCompanyIdIn(companyIds);
 
         Map<Long, List<ProjectClientMember>> clientMemberMap = groupClientMembersByProjectId(allClientMembers);
         Map<Long, List<ProjectDevMember>> devMemberMap = groupDevMembersByProjectId(allDevMembers);

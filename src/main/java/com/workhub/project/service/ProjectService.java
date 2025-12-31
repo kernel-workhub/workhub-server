@@ -171,4 +171,14 @@ public class ProjectService {
         return projectRepository.findProjectsWithPaging(projectIds, startDate, endDate,
                 status, sortOrder, cursor, size);
     }
+
+    /**
+     * 특정 회사의 모든 프로젝트 조회
+     *
+     * @param clientCompanyId 클라이언트 회사 ID
+     * @return 해당 회사의 프로젝트 리스트
+     */
+    public List<Project> findAllByClientCompanyId(Long clientCompanyId) {
+        return projectRepository.findAllByClientCompanyId(clientCompanyId);
+    }
 }
