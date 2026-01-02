@@ -9,6 +9,7 @@ import com.workhub.userTable.dto.user.response.UserDetailResponse;
 import com.workhub.userTable.dto.user.response.UserLoginResponse;
 import com.workhub.userTable.dto.user.response.UserNameResponse;
 import com.workhub.userTable.entity.Status;
+import com.workhub.userTable.entity.UserRole;
 import com.workhub.userTable.entity.UserTable;
 import com.workhub.userTable.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -114,5 +115,18 @@ public class UserService {
     @Transactional(readOnly = true)
     public Long countActiveUsersUntil(LocalDateTime monthEnd) {
         return userRepository.countActiveUsersUntil(monthEnd);
+    }
+
+    /**
+     * 특정 회사의 특정 역할 및 상태를 가진 사용자 수 조회
+     *
+     * @param companyId 회사 ID
+     * @param role 사용자 역할
+     * @param status 사용자 상태
+     * @return 조건에 맞는 사용자 수
+     */
+    @Transactional(readOnly = true)
+    public Long countByCompanyIdAndRoleAndStatus(Long companyId, UserRole role, Status status) {
+        return userRepository.countByCompanyIdAndRoleAndStatus(companyId, role, status);
     }
 }

@@ -9,7 +9,10 @@ import com.workhub.userTable.dto.company.response.CompanyListResponse;
 import com.workhub.userTable.dto.company.response.CompanyResponse;
 import com.workhub.userTable.dto.company.response.CompanyTitleResponse;
 import com.workhub.userTable.dto.user.response.UserNameResponse;
-import com.workhub.userTable.service.company.CompanyService;
+import com.workhub.userTable.service.company.CreateCompanyService;
+import com.workhub.userTable.service.company.DeleteCompanyService;
+import com.workhub.userTable.service.company.ReadCompanyService;
+import com.workhub.userTable.service.company.UpdateCompanyService;
 import com.workhub.userTable.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +30,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompanyController implements CompanyApi {
 
-    private final CompanyService companyService;
+    private final CreateCompanyService createCompanyService;
+    private final ReadCompanyService readCompanyService;
+    private final UpdateCompanyService updateCompanyService;
+    private final DeleteCompanyService deleteCompanyService;
     private final UserService userService;
 
     @PostMapping("/add")
     @Override
     public ResponseEntity<ApiResponse<CompanyResponse>> registerCompany(@RequestBody @Valid CompanyRegisterRequest request) {
-        CompanyResponse response = companyService.registerCompany(request);
+        CompanyResponse response = createCompanyService.registerCompany(request);
         return ApiResponse.created(response, "고객사가 등록되었습니다.");
     }
 
@@ -42,7 +48,7 @@ public class CompanyController implements CompanyApi {
     public ResponseEntity<ApiResponse<Page<CompanyListResponse>>> getCompanies(
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<CompanyListResponse> companies = companyService.getCompanies(pageable);
+        Page<CompanyListResponse> companies = readCompanyService.getCompanies(pageable);
         return ApiResponse.success(companies);
     }
 
@@ -50,7 +56,7 @@ public class CompanyController implements CompanyApi {
     @Override
     public ResponseEntity<ApiResponse<List<CompanyTitleResponse>>> getCompanyNames() {
 
-        List<CompanyTitleResponse> response = companyService.getCompanyNameList();
+        List<CompanyTitleResponse> response = readCompanyService.getCompanyNameList();
         return ApiResponse.success(response);
     }
 
@@ -58,13 +64,13 @@ public class CompanyController implements CompanyApi {
     @Override
     public ResponseEntity<ApiResponse<CompanyDetailResponse>> getCompany(@PathVariable("companyId") Long companyId) {
 
-        CompanyDetailResponse company = companyService.getCompany(companyId);
+        CompanyDetailResponse company = readCompanyService.getCompany(companyId);
         return ApiResponse.success(company);
     }
     @DeleteMapping("/{companyId}")
     @Override
     public ResponseEntity<ApiResponse<Object>> deleteCompany(@PathVariable("companyId") Long companyId) {
-            companyService.deleteCompany(companyId);
+            deleteCompanyService.deleteCompany(companyId);
             return ApiResponse.success(null, "고객사가 비활성화되었습니다.");
     }
 
@@ -74,7 +80,7 @@ public class CompanyController implements CompanyApi {
             @PathVariable("companyId") Long companyId,
             @RequestBody @Valid CompanyStatusUpdateRequest request
     ) {
-        CompanyResponse response = companyService.updateCompanyStatus(companyId, request.status());
+        CompanyResponse response = updateCompanyService.updateCompanyStatus(companyId, request.status());
         return ApiResponse.success(response, "고객사 상태가 변경되었습니다.");
     }
 

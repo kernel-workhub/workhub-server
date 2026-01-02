@@ -13,6 +13,7 @@ import com.workhub.userTable.entity.UserTable;
 import com.workhub.userTable.entity.Company;
 import com.workhub.userTable.entity.CompanyStatus;
 import com.workhub.userTable.service.company.CompanyService;
+import com.workhub.userTable.service.company.ReadCompanyService;
 import com.workhub.userTable.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,6 +46,9 @@ class ReadProjectServiceTest {
 
     @Mock
     private ProjectNodeService projectNodeService;
+
+    @Mock
+    private ReadCompanyService readCompanyService;
 
     @Mock
     private CompanyService companyService;
@@ -153,6 +157,7 @@ class ReadProjectServiceTest {
                 .build();
 
         lenient().when(companyService.findById(anyLong())).thenReturn(company);
+        lenient().when(readCompanyService.getCompanyMapByCompanyIdIn(anyList())).thenReturn(Map.of(1L, company));
     }
 
     @Test
